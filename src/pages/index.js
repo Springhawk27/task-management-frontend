@@ -5,8 +5,7 @@ import Banner from "@/components/UI/Banner";
 import Head from "next/head";
 import React from "react";
 
-const HomePage = ({ allTasks }) => {
-  console.log("tasks", allTasks);
+const HomePage = () => {
   return (
     <>
       <Head>
@@ -24,25 +23,4 @@ export default HomePage;
 
 HomePage.getLayout = function getLayout(page) {
   return <RootLayout>{page}</RootLayout>;
-};
-
-export const getStaticProps = async () => {
-  // if (typeof window === "undefined") {
-  //   return {
-  //     props: {
-  //       allTasks: [],
-  //     },
-  //   };
-  // }
-  const res = await fetch(`${process.env.URL}/api/v1/tasks`);
-  const data = await res.json();
-  console.log(data);
-  // Get all tasks
-  const allTasks = data?.data;
-
-  return {
-    props: {
-      allTasks,
-    },
-  };
 };

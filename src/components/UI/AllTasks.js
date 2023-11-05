@@ -1,15 +1,5 @@
-import { Button, Card, Col, Row, Tooltip } from "antd";
-import Image from "next/image";
-import {
-  ArrowRightOutlined,
-  DollarOutlined,
-  StarOutlined,
-  TagsOutlined,
-  ProfileOutlined,
-  VerticalRightOutlined,
-  VerticalLeftOutlined,
-} from "@ant-design/icons";
-import Link from "next/link";
+import { Card } from "antd";
+import { VerticalRightOutlined, VerticalLeftOutlined } from "@ant-design/icons";
 import { useMemo, useState } from "react";
 
 const AllTasks = ({ allTasks }) => {

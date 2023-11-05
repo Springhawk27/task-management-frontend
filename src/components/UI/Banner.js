@@ -8,10 +8,7 @@ export default function Banner() {
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
               Welcome to Task Management App{" "}
-              <Link
-                href="/allcomponents"
-                className="font-semibold text-red-900"
-              >
+              <Link href="/alltasks" className="font-semibold text-red-900">
                 <span className="absolute inset-0" aria-hidden="true" />
                 Show Me <span aria-hidden="true">&rarr;</span>
               </Link>
