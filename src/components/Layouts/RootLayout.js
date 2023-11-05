@@ -58,7 +58,7 @@ const RootLayout = ({ children }) => {
         </div>
         {screens.md ? (
           <div className={styles.menu_items}>
-            <Link href="/">
+            <Link href="/alltasks">
               <items>
                 <Space>
                   <ShopOutlined />
@@ -108,7 +108,7 @@ const RootLayout = ({ children }) => {
               open={open}
             >
               <div className="text-black flex flex-col gap-y-4">
-                <Link href="/">
+                <Link href="/alltasks">
                   <items>
                     <Space>
                       <ShopOutlined />

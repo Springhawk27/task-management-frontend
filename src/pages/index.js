@@ -1,5 +1,6 @@
 import RootLayout from "@/components/Layouts/RootLayout";
 import AllTasks from "@/components/UI/AllTasks";
+import Banner from "@/components/UI/Banner";
 
 import Head from "next/head";
 import React from "react";
@@ -14,7 +15,7 @@ const HomePage = ({ allTasks }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <AllTasks allTasks={allTasks}></AllTasks>
+      <Banner></Banner>
     </>
   );
 };
