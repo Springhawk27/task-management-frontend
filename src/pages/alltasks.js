@@ -4,11 +4,15 @@ import Head from "next/head";
 import React, { useState } from "react";
 import { Button, Col, Image, List, Row, message } from "antd";
 import Link from "next/link";
+import AddTaskModal from "@/components/UI/AddTaskModal";
 
 const AllTasksPage = ({ allTasks: initialTasks }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [deletedTask, setDeletedTask] = useState(null);
   const [allTasks, setAllTasks] = useState(initialTasks);
+  const [isAddTaskModalVisible, setIsAddTaskModalVisible] = useState(false);
+
+  const handleAddTask = (newTask) => {};
 
   // Function to remove a task from the client-side state
   const removeTaskFromState = (taskId) => {
@@ -85,6 +89,11 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
 
       <div>
         {contextHolder}
+        <AddTaskModal
+          open={isAddTaskModalVisible}
+          onAddTask={handleAddTask}
+          onCancel={() => setIsAddTaskModalVisible(false)}
+        />
 
         <Row>
           <Col className="w-full mb-10 flex justify-center">
@@ -98,6 +107,10 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
                   <Button
                     className="font-bold text-red-800 hover:text-sky-700"
                     type="link"
+                    onClick={() => {
+                      console.log("Add New Task button clicked");
+                      setIsAddTaskModalVisible(true);
+                    }}
                   >
                     Add New Task
                   </Button>{" "}
