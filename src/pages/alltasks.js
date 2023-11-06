@@ -6,6 +6,7 @@ import { Button, Col, Image, List, Row, message } from "antd";
 import Link from "next/link";
 import AddTaskModal from "@/components/UI/AddTaskModal";
 import ConfirmationModal from "@/components/UI/ConfirmationModal";
+import EditTaskModal from "@/components/UI/EditTaskModal";
 
 const AllTasksPage = ({ allTasks: initialTasks }) => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -15,6 +16,9 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
   const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
     useState(false);
   const [taskToRemove, setTaskToRemove] = useState(null);
+
+  const [isEditTaskModalVisible, setIsEditTaskModalVisible] = useState(false);
+  const [taskToEdit, setTaskToEdit] = useState(null);
 
   const handleAddTask = async (newTask) => {
     try {
@@ -80,6 +84,36 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
     setIsConfirmationModalVisible(false);
   };
 
+  // Function to open the Edit Task modal
+  const openEditTaskModal = (task) => {
+    setTaskToEdit(task);
+    setIsEditTaskModalVisible(true);
+  };
+
+  const updateTask = async (updatedData) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/v1/tasks/${taskToEdit._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
+
+      if (response.ok) {
+        successUpdate();
+        fetchTasks();
+        setIsEditTaskModalVisible(false);
+      } else {
+        console.error("Failed to update task");
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+    }
+  };
   // fetch the latest/refresh tasks
   const fetchTasks = async () => {
     try {
@@ -115,6 +149,12 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
       content: `Great, You have the latest task`,
     });
   };
+  const successUpdate = () => {
+    messageApi.open({
+      type: "success",
+      content: "Task updated successfully",
+    });
+  };
 
   return (
     <>
@@ -137,6 +177,12 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
           open={isConfirmationModalVisible}
           onConfirm={handleConfirmRemoveTask}
           onCancel={handleCancelRemoveTask}
+        />
+        <EditTaskModal
+          open={isEditTaskModalVisible}
+          taskData={taskToEdit}
+          onUpdateTask={updateTask}
+          onCancel={() => setIsEditTaskModalVisible(false)}
         />
 
         <Row>
@@ -170,15 +216,14 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
                   key={task.id}
                   className="bg-slate-50 mb-2 p-2"
                   actions={[
-                    <Link href="/" key="list-loadmore-edit">
-                      <Button
-                        type="text"
-                        key="list-loadmore-edit"
-                        className={"text-yellow-500"}
-                      >
-                        Edit
-                      </Button>
-                    </Link>,
+                    <Button
+                      type="text"
+                      key="list-loadmore-edit"
+                      className={"text-yellow-500"}
+                      onClick={() => openEditTaskModal(task)}
+                    >
+                      Edit
+                    </Button>,
                     <Button
                       type="text"
                       key="list-loadmore-edit"
