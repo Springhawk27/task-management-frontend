@@ -5,26 +5,57 @@ import React, { useState } from "react";
 import { Button, Col, Image, List, Row, message } from "antd";
 import Link from "next/link";
 import AddTaskModal from "@/components/UI/AddTaskModal";
+import ConfirmationModal from "@/components/UI/ConfirmationModal";
 
 const AllTasksPage = ({ allTasks: initialTasks }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [deletedTask, setDeletedTask] = useState(null);
   const [allTasks, setAllTasks] = useState(initialTasks);
   const [isAddTaskModalVisible, setIsAddTaskModalVisible] = useState(false);
+  const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
+    useState(false);
+  const [taskToRemove, setTaskToRemove] = useState(null);
 
-  const handleAddTask = (newTask) => {};
+  const handleAddTask = async (newTask) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/v1/tasks/create-task`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newTask),
+        }
+      );
 
-  // Function to remove a task from the client-side state
+      if (response.ok) {
+        success();
+        fetchTasks();
+        setIsAddTaskModalVisible(false);
+      } else {
+        console.error("Failed to add task");
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+    }
+  };
+
+  // Function to remove a task from the client-side
   const removeTaskFromState = (taskId) => {
     setAllTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
   };
 
-  // AllTasksPage.js
-  const handleRemoveTask = async (taskId) => {
+  // Function to remove a task
+  const handleRemoveTask = (taskId) => {
+    setTaskToRemove(taskId);
+    setIsConfirmationModalVisible(true);
+  };
+
+  const handleConfirmRemoveTask = async () => {
     try {
-      // const response = await fetch(`/api/v1/tasks/${taskId}`, {
       const response = await fetch(
-        `http://localhost:5000/api/v1/tasks/${taskId}`,
+        `http://localhost:5000/api/v1/tasks/${taskToRemove}`,
         {
           method: "DELETE",
         }
@@ -32,8 +63,9 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
 
       if (response.ok) {
         // Task deleted successfully
-        removeTaskFromState(taskId);
+        removeTaskFromState(taskToRemove);
         successDelete();
+        setIsConfirmationModalVisible(false);
       } else {
         // Handle error
         console.error("Failed to delete task");
@@ -43,6 +75,12 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
     }
   };
 
+  // modal cancel remove
+  const handleCancelRemoveTask = () => {
+    setIsConfirmationModalVisible(false);
+  };
+
+  // fetch the latest/refresh tasks
   const fetchTasks = async () => {
     try {
       const res = await fetch("http://localhost:5000/api/v1/tasks");
@@ -54,6 +92,7 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
     }
   };
 
+  // refresh handler
   const handleRefresh = () => {
     fetchTasks();
   };
@@ -93,6 +132,11 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
           open={isAddTaskModalVisible}
           onAddTask={handleAddTask}
           onCancel={() => setIsAddTaskModalVisible(false)}
+        />
+        <ConfirmationModal
+          open={isConfirmationModalVisible}
+          onConfirm={handleConfirmRemoveTask}
+          onCancel={handleCancelRemoveTask}
         />
 
         <Row>

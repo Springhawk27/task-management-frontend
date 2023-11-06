@@ -6,6 +6,7 @@ const AddTaskModal = ({ open, onAddTask, onCancel }) => {
   const { register, handleSubmit, errors, reset } = useForm();
 
   const onSubmit = (data) => {
+    // console.log(data);
     onAddTask(data);
     reset();
     onCancel();
@@ -13,34 +14,41 @@ const AddTaskModal = ({ open, onAddTask, onCancel }) => {
 
   return (
     <Modal title="Add New Task" open={open} onCancel={onCancel} footer={null}>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <Form.Item
-          label="Title"
-          name="title"
-          rules={[{ required: true, message: "Title is required" }]}
-        >
-          <Input
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="title"
+          >
+            Title
+          </label>
+          <input
+            className="w-full border rounded-md py-2 px-3"
             {...register("title", { required: true })}
             placeholder="Enter title"
+            id="title"
           />
-        </Form.Item>
-        <Form.Item
-          label="Description"
-          name="description"
-          rules={[{ required: true, message: "Description is required" }]}
-        >
-          <Input.TextArea
+        </div>
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="description"
+          >
+            Description
+          </label>
+          <textarea
+            className="w-full border rounded-md py-2 px-3"
             {...register("description", { required: true })}
             placeholder="Enter description"
-            autoSize={{ minRows: 3, maxRows: 6 }}
+            id="description"
           />
-        </Form.Item>
-        <div style={{ textAlign: "center" }}>
+        </div>
+        <div className="text-center">
           <Button type="primary" htmlType="submit">
             Add Task
           </Button>
         </div>
-      </Form>
+      </form>
     </Modal>
   );
 };
