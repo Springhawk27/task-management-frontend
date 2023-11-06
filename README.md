@@ -1,5 +1,7 @@
 ## Live Link: https://task-management-frontend-chi.vercel.app/
 
+### Backend: https://github.com/Springhawk27/task-management-backend
+
 clone or download this project. then run the below command
 
 ```bash
@@ -21,7 +23,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
     - NextAuth
         - Github login
         - Private route
-    - Redux
     - MongoDb
     - Node.js
     - Express.js

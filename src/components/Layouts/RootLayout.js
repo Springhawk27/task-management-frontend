@@ -13,10 +13,12 @@ const { Header, Content, Footer } = Layout;
 import styles from "@/styles/Home.module.css";
 import Link from "next/link";
 import { useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const RootLayout = ({ children }) => {
   const { useBreakpoint } = Grid;
   const screens = useBreakpoint();
+  const { data: session } = useSession();
 
   const [open, setOpen] = useState(false);
   const [childrenDrawer, setChildrenDrawer] = useState(false);
@@ -67,26 +69,26 @@ const RootLayout = ({ children }) => {
               </items>
             </Link>
 
-            {/* {session?.user ? ( */}
-            <items>
-              <Space>
-                <Button
-                  className="ms-2 font-bold"
-                  onClick={() => signOut()}
-                  type="text"
-                  danger
-                >
-                  Logout
-                </Button>
-              </Space>
-            </items>
-            {/* ) : ( */}
-            <Link href="/login">
-              <Space>
-                <items>Login</items>
-              </Space>
-            </Link>
-            {/* )} */}
+            {session?.user ? (
+              <items>
+                <Space>
+                  <Button
+                    className="ms-2 font-bold"
+                    onClick={() => signOut()}
+                    type="text"
+                    danger
+                  >
+                    Logout
+                  </Button>
+                </Space>
+              </items>
+            ) : (
+              <Link href="/login">
+                <Space>
+                  <items>Login</items>
+                </Space>
+              </Link>
+            )}
           </div>
         ) : (
           <>
@@ -117,26 +119,26 @@ const RootLayout = ({ children }) => {
                   </items>
                 </Link>
 
-                {/* {session?.user ? ( */}
-                <items>
-                  <Space>
-                    <Button
-                      className="ms-2 font-bold"
-                      onClick={() => signOut()}
-                      type="text"
-                      danger
-                    >
-                      Logout
-                    </Button>
-                  </Space>
-                </items>
-                {/* ) : ( */}
-                <Link href="/login">
-                  <Space>
-                    <items>Login</items>
-                  </Space>
-                </Link>
-                {/* )} */}
+                {session?.user ? (
+                  <items>
+                    <Space>
+                      <Button
+                        className="ms-2 font-bold"
+                        onClick={() => signOut()}
+                        type="text"
+                        danger
+                      >
+                        Logout
+                      </Button>
+                    </Space>
+                  </items>
+                ) : (
+                  <Link href="/login">
+                    <Space>
+                      <items>Login</items>
+                    </Space>
+                  </Link>
+                )}
               </div>
             </Drawer>
           </>
