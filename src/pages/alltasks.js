@@ -23,7 +23,7 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
   const handleAddTask = async (newTask) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/tasks/create-task`,
+        `https://task-management-backend-three.vercel.app/api/v1/tasks/create-task`,
         {
           method: "POST",
           headers: {
@@ -59,7 +59,7 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
   const handleConfirmRemoveTask = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/tasks/${taskToRemove}`,
+        `https://task-management-backend-three.vercel.app/api/v1/tasks/${taskToRemove}`,
         {
           method: "DELETE",
         }
@@ -93,7 +93,7 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
   const updateTask = async (updatedData) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/tasks/${taskToEdit._id}`,
+        `https://task-management-backend-three.vercel.app/api/v1/tasks/${taskToEdit._id}`,
         {
           method: "PATCH",
           headers: {
@@ -117,7 +117,9 @@ const AllTasksPage = ({ allTasks: initialTasks }) => {
   // fetch the latest/refresh tasks
   const fetchTasks = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/v1/tasks");
+      const res = await fetch(
+        "https://task-management-backend-three.vercel.app/api/v1/tasks"
+      );
       const data = await res.json();
       setAllTasks(data?.data);
       successRefresh();
